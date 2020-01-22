@@ -1,0 +1,38 @@
+AppBundle\Entity\Contact:
+  type: entity
+  table: contacts
+  id:
+    id:
+      type: integer
+      generator: { strategy: AUTO }
+  fields:
+    firstname:
+      type: string
+      length: 50
+    lastname:
+      type: string
+      length: 50
+    street:
+      type: string
+      length: 100
+    zip:
+      type: string
+      length: 50
+    city:
+      type: string
+      length: 50
+    country:
+      type: string
+      length: 50
+    phone:
+      type: string
+      length: 100
+    dob:
+      type: date
+      length: 50
+    email:
+      type: string
+      length: 50
+    picture:
+      type: string
+      length: 50
