@@ -9,6 +9,8 @@
             <tr>
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
+                <th scope="col">Mobile</th>
+                <th scope="col">Picture</th>
                 <th scope="col">Action</th>
             </tr>
             </thead>
@@ -17,6 +19,8 @@
                 <tr>
                     <td>{{ contact.firstname }}</td>
                     <td>{{ contact.lastname }}</td>
+                    <td>{{ contact.phone }}</td>
+                    <td>{{ contact.picture }}</td>
                     <td>
                         <a href="/contact/show/{{ contact.id }}" class="btn btn-dark">Details</a>
                         <a href="/contact/edit/{{ contact.id }}" class="btn btn-primary">Edit</a>
