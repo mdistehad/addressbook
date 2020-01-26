@@ -29,12 +29,21 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/list" , name = "contact_list")
+     * @Route("contact/list" , name = "contact_list")
      */
     public function viewContactList(Request $request){
         // loading
         $contacts = $this->getDoctrine()->getRepository(Contact::class)->findAll();
         return $this->render('default/list.html.twig', array('contacts'=> $contacts));
+    }
+
+    /**
+     * @Route("contact/details/{id}")
+     */
+    public function showDetails(Request $request, $id){
+        // loading
+        $contact = $this->getDoctrine()->getRepository(Contact::class)->find($id);
+        return $this->render('default/details.html.twig', array('contact'=> $contact));
     }
 
     /**
@@ -77,7 +86,7 @@ class HomeController extends Controller
                     'attr'=>array('class'=> 'form-control')
                 ))
 
-            ->add('save',SubmitType::class, array('label'=> 'Create','attr' => array('class'=> 'btn btn-primary mt-3')))
+            ->add('save',SubmitType::class, array('label'=> 'Create','attr' => array('class'=> 'btn btn-success mt-3')))
             ->getForm();
 
         $form->handleRequest($request);
@@ -142,7 +151,7 @@ class HomeController extends Controller
                     ],
                     'attr'=>array('class'=> 'form-control')
                 ))
-            ->add('save',SubmitType::class, array('label'=> 'Create','attr' => array('class'=> 'btn btn-primary mt-3')))
+            ->add('save',SubmitType::class, array('label'=> 'Update','attr' => array('class'=> 'btn btn-success mt-3')))
             ->getForm();
 
         $form->handleRequest($request);

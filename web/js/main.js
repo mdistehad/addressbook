@@ -13,3 +13,7 @@ if(contacts){
       }
     });
 }
+
+$(document).ready(function() {
+    $('#contacts').DataTable();
+} );
