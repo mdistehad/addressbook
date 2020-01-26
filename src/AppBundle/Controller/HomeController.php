@@ -4,7 +4,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Contact;
+use AppBundle\Form\ContactType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +27,7 @@ class HomeController extends Controller
     public function indexAction(Request $request)
     {
         // loading homapage
-        return $this->render('default/index.html.twig');
+        return $this->redirectToRoute("contact_list");
     }
 
     /**
@@ -50,44 +52,11 @@ class HomeController extends Controller
      * @Route("/contact/new", name= "new_contact")
      * Method({"GET", "POST"})
      */
-
     public function new(Request $request){
+
         $contact = new Contact();
 
-        $form = $this->createFormBuilder($contact)
-            ->add('firstname', TextType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('lastname', TextType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('email', TextType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('phone', TextType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('dob', DateType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('street', TextType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('city', TextType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('zip', TextType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('country', TextType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('picture', FileType::class,
-                array(
-                    'label'=> 'Insert Image',
-                    // unmapped means that this field is not associated to any entity property
-                    'mapped' => false,
-
-                    // make it optional so you don't have to re-upload the PDF file
-                    // everytime you edit the Product details
-                    'required' => false,
-                    'constraints' => [
-                        new File([
-                            'maxSize' => '1024k',
-                            'mimeTypes' => [
-                                'image/jpeg',
-                                'image/png'
-                            ],
-                            'mimeTypesMessage' => 'Please upload a Image',
-                        ])
-                    ],
-                    'attr'=>array('class'=> 'form-control')
-                ))
-
-            ->add('save',SubmitType::class, array('label'=> 'Create','attr' => array('class'=> 'btn btn-success mt-3')))
-            ->getForm();
+        $form = $this->createForm(ContactType::class,$contact, array('label' => 'Save'));
 
         $form->handleRequest($request);
 
@@ -111,8 +80,8 @@ class HomeController extends Controller
         }
 
         return $this->render('default/edit.html.twig', array('form' => $form->createView()));
-
     }
+
 
     /**
      * @Route("/contact/edit/{id}", name= "edit_contact")
@@ -124,35 +93,7 @@ class HomeController extends Controller
 
         $contact = $this->getDoctrine()->getRepository(Contact::class)->find($id);
 
-        $form = $this->createFormBuilder($contact)
-            ->add('firstname', TextType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('lastname', TextType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('email', TextType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('phone', TextType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('dob', DateType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('street', TextType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('city', TextType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('zip', TextType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('country', TextType::class,array('attr'=>array('class'=> 'form-control')))
-            ->add('picture', FileType::class,
-                array(
-                    'label'=> 'Insert Image',
-                    // unmapped means that this field is not associated to any entity property
-                    'mapped' => false,
-
-                    // make it optional so you don't have to re-upload the PDF file
-                    // everytime you edit the Product details
-                    'required' => false,
-                    'constraints' => [
-                        new File([
-                            'maxSize' => '1024k',
-                            'mimeTypesMessage' => 'Please upload a Image',
-                        ])
-                    ],
-                    'attr'=>array('class'=> 'form-control')
-                ))
-            ->add('save',SubmitType::class, array('label'=> 'Update','attr' => array('class'=> 'btn btn-success mt-3')))
-            ->getForm();
+        $form = $this->createForm(ContactType::class,$contact, array('label' => 'Update'));
 
         $form->handleRequest($request);
 
