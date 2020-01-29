@@ -23,7 +23,7 @@ class HomeController extends Controller
      */
     public function indexAction(Request $request)
     {
-        // loading homapage
+        // loading homepage
         return $this->redirectToRoute("contact_list");
     }
 
@@ -49,7 +49,7 @@ class HomeController extends Controller
      * @Route("contact/details/{id}")
      */
     public function showDetails(Request $request, $id){
-        // loading
+
         $contact = $this->getDoctrine()->getRepository(Contact::class)->find($id);
         $header = 'Contact Details';
         return $this->render('default/details.html.twig',
