@@ -6,22 +6,19 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Contact;
 use AppBundle\Form\ContactType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Validator\Constraints\File;
+
 
 class HomeController extends Controller
 {
     /**
+     * Showing all the contacts in a list
+     *
      * @Route("/")
      */
     public function indexAction(Request $request)
@@ -31,10 +28,12 @@ class HomeController extends Controller
     }
 
     /**
+     * Showing all the contacts in a list
+     *
      * @Route("contact/list" , name = "contact_list")
      */
     public function viewContactList(Request $request){
-        // loading
+
         $contacts = $this->getDoctrine()->getRepository(Contact::class)->findAll();
         $header = 'Contact List';
         return $this->render('default/list.html.twig',
@@ -45,6 +44,8 @@ class HomeController extends Controller
     }
 
     /**
+     * Showing the contact details of an specific user
+     *
      * @Route("contact/details/{id}")
      */
     public function showDetails(Request $request, $id){
@@ -59,6 +60,8 @@ class HomeController extends Controller
     }
 
     /**
+     * Creating a new contact
+     *
      * @Route("/contact/new", name= "new_contact")
      * Method({"GET", "POST"})
      */
@@ -102,6 +105,8 @@ class HomeController extends Controller
 
 
     /**
+     * Updating the contact information of an specific user
+     *
      * @Route("/contact/edit/{id}", name= "edit_contact")
      * Method({"GET", "POST"})
      */
@@ -124,8 +129,9 @@ class HomeController extends Controller
             /** @var UploadedFile $file */
             $file = $form->get('picture')->getData();
 
-            // Edit picture
+
             if($file!=null){
+
                 // Removing old file
                 if($oldFileName!=null){
                     $fileSystem = new Filesystem();
@@ -161,6 +167,8 @@ class HomeController extends Controller
     }
 
     /**
+     * Deleting contact information
+     *
      * @Route("/contact/delete/{id}")
      * Method({"DELETE"})
      */
