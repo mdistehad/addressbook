@@ -1,20 +1,49 @@
 <?php
 
 namespace AppBundle\Entity;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 //
 
 class Contact {
     private $id;
+
+    /**
+     * @Assert\NotBlank
+     */
     private $firstname;
+    /**
+     * @Assert\NotBlank
+     */
     private $lastname;
+
+    /**
+     * @Assert\Length(
+     *      min = 11,
+     *      max = 13,
+     *      minMessage = "Your phone number must be at least {{ limit }} digits long",
+     *      maxMessage = "Your phone number cannot be longer than {{ limit }} digits"
+     * )
+     */
     private $phone;
     private $street;
+
+    /**
+     * @Assert\NotBlank
+     * @Assert\Length(
+     *     max=5,
+     *     maxMessage = "Your Zip code vannot be longer than {{ limit }} digits"
+     *     )
+     */
     private $zip;
     private $city;
     private $country;
     private $email;
     private $dob;
+    /**
+     * @ORM\Column(type="varchar", nullable=true)
+     */
     private $picture;
 
 

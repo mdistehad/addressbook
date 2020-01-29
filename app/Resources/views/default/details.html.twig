@@ -3,68 +3,63 @@
 {% block title %} Addressbook{% endblock %}
 
 {% block body %}
-    <div class="card">
-        <div class="card-header">
-            <h3 class="float-left">Contact Details</h3>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td style="font-weight: bold">Firstname</td>
+                    <td>{{ contact.firstname }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold">Lastname</td>
+                    <td>{{ contact.lastname }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold">Phone</td>
+                    <td>{{ contact.phone }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold">Email</td>
+                    <td>{{ contact.email }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold">Date of Birth</td>
+                    <td>{{ contact.dob|date('Y-m-d') }}</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-lg-4">
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <td style="font-weight: bold">Firstname</td>
-                            <td>{{ contact.firstname }}</td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold">Lastname</td>
-                            <td>{{ contact.lastname }}</td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold">Phone</td>
-                            <td>{{ contact.phone }}</td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold">Email</td>
-                            <td>{{ contact.email }}</td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold">Date of Birth</td>
-                            <td>{{ contact.dob|date('Y-m-d') }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-lg-4">
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <td style="font-weight: bold">Street name and Number</td>
-                            <td>{{ contact.street }}</td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold">Zip</td>
-                            <td>{{ contact.zip }}</td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold">City</td>
-                            <td>{{ contact.city }}</td>
-                        </tr>
-                        <tr>
-                            <td style="font-weight: bold">Country</td>
-                            <td>{{ contact.country }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="col-lg-4">
-                    {% if(contact.picture)!= null  %}
-                    <img class="img-responsive" src="{{ asset("uploads/images/#{contact.picture}") }}" width="200" height="200">
-                    {% else %}
-                    <img class="img-responsive" src="{{ asset("uploads/images/avatar.jpg") }}" width="200" height="200">
-                    {% endif %}
-                </div>
-            </div>
+        <div class="col-lg-4">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <td style="font-weight: bold">Street name and Number</td>
+                    <td>{{ contact.street }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold">Zip</td>
+                    <td>{{ contact.zip }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold">City</td>
+                    <td>{{ contact.city }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold">Country</td>
+                    <td>{{ contact.country }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-lg-4">
+            {% if(contact.picture)!= null %}
+                <img class="img-responsive" src="{{ asset("uploads/images/#{contact.picture}") }}" width="200"
+                     height="200">
+            {% else %}
+                <img class="img-responsive" src="{{ asset("uploads/images/avatar.jpg") }}" width="200" height="200">
+            {% endif %}
         </div>
     </div>
 

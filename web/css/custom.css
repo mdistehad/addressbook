@@ -1,6 +1,10 @@
 .navbar {
     margin-bottom: 20px;
 }
+
+.card {
+    margin-bottom: 30px;
+}
 .navbar-dark .navbar-nav .nav-link {
     color: #f8f9fa;
 }

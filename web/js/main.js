@@ -8,7 +8,7 @@ if(contacts){
 
              fetch(`/contact/delete/${id}`,{
                  method: 'DELETE'
-             }).then(res => window.location.reload());
+              }).then(res => window.location.reload());
          }
       }
     });
@@ -16,4 +16,9 @@ if(contacts){
 
 $(document).ready(function() {
     $('#contacts').DataTable();
+
+    setTimeout(function(){
+        $("div.alert").remove();
+    }, 5000 ); // 5 secs
+
 } );

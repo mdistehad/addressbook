@@ -36,7 +36,12 @@ class HomeController extends Controller
     public function viewContactList(Request $request){
         // loading
         $contacts = $this->getDoctrine()->getRepository(Contact::class)->findAll();
-        return $this->render('default/list.html.twig', array('contacts'=> $contacts));
+        $header = 'Contact List';
+        return $this->render('default/list.html.twig',
+            array(
+                'contacts'=> $contacts,
+                'header' => $header)
+        );
     }
 
     /**
@@ -45,7 +50,12 @@ class HomeController extends Controller
     public function showDetails(Request $request, $id){
         // loading
         $contact = $this->getDoctrine()->getRepository(Contact::class)->find($id);
-        return $this->render('default/details.html.twig', array('contact'=> $contact));
+        $header = 'Contact Details';
+        return $this->render('default/details.html.twig',
+            array(
+                'contact'=> $contact,
+                'header' => $header)
+        );
     }
 
     /**
@@ -55,7 +65,7 @@ class HomeController extends Controller
     public function new(Request $request){
 
         $contact = new Contact();
-
+        $header = 'Create New Contact';
         $form = $this->createForm(ContactType::class,$contact, array('label' => 'Save'));
 
         $form->handleRequest($request);
@@ -65,21 +75,29 @@ class HomeController extends Controller
 
             /** @var UploadedFile $file */
             $file = $form->get('picture')->getData();
-            $fileName = time().'.'.$file->guessExtension();
-            $file->move(
-                $this->getParameter('image_directory'),
-                $fileName
-            );
+            if($file!= null){
+                $fileName = time().'.'.$file->guessExtension();
+                $file->move(
+                    $this->getParameter('image_directory'),
+                    $fileName
+                );
+                $contact->setPicture($fileName);
+            }
 
-            $contact->setPicture($fileName);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($contact);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Succesfully added the contact information');
+
             return $this->redirectToRoute("contact_list");
         }
 
-        return $this->render('default/edit.html.twig', array('form' => $form->createView()));
+        return $this->render('default/new.html.twig',
+            array(
+                'form' => $form->createView(),
+                'header' => $header)
+        );
     }
 
 
@@ -90,8 +108,10 @@ class HomeController extends Controller
 
     public function edit(Request $request, $id){
 
-
         $contact = $this->getDoctrine()->getRepository(Contact::class)->find($id);
+        $header = 'Edit Contact information';
+        $oldFileName = $contact->getPicture();
+        $oldFilePath = $this->getParameter('image_directory').'/'.$oldFileName;
 
         $form = $this->createForm(ContactType::class,$contact, array('label' => 'Update'));
 
@@ -100,18 +120,17 @@ class HomeController extends Controller
         if($form->isSubmitted() && $form->isValid()){
 
             $contact = $form->getData();
-            $oldFileName = $contact->getPicture();
-            $oldFilePath = $this->getParameter('image_directory').'/'.$oldFileName;
 
             /** @var UploadedFile $file */
             $file = $form->get('picture')->getData();
 
             // Edit picture
             if($file!=null){
-
                 // Removing old file
-                $fileSystem = new Filesystem();
-                $fileSystem->remove($oldFilePath);
+                if($oldFileName!=null){
+                    $fileSystem = new Filesystem();
+                    $fileSystem->remove($oldFilePath);
+                }
 
                 // Storing new file
                 $fileName = time().'.'.$file->guessExtension();
@@ -128,10 +147,16 @@ class HomeController extends Controller
             $entityManager->persist($contact);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Succesfully updated the contact information');
+
             return $this->redirectToRoute("contact_list");
         }
 
-        return $this->render('default/new.html.twig', array('form' => $form->createView()));
+        return $this->render('default/edit.html.twig',
+            array(
+                'form' => $form->createView(),
+                'header' => $header
+            ));
 
     }
 
@@ -146,13 +171,18 @@ class HomeController extends Controller
         // Removing file
         $oldFileName = $contact->getPicture();
         $oldFilePath = $this->getParameter('image_directory').'/'.$oldFileName;
-        $fileSystem = new Filesystem();
-        $fileSystem->remove(array($oldFilePath));
+
+        if($oldFileName!= null){
+            $fileSystem = new Filesystem();
+            $fileSystem->remove(array($oldFilePath));
+        }
 
         // Removing post
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->remove($contact);
         $entityManager->flush();
+
+        $this->addFlash('success', 'Succesfully deleted the contact information');
 
         $response = new Response();
         $response->send();
